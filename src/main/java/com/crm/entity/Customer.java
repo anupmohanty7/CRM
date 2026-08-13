@@ -6,6 +6,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.crm.enums.CustomerStatus;
+import com.crm.enums.CustomerType;
+import com.crm.enums.LeadSource;
+import com.crm.enums.LeadStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,9 +42,17 @@ public class Customer {
 	
 	private String address;
 	
-	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private CustomerStatus status;
+	
+	@Enumerated(EnumType.STRING)
+	private CustomerType customerType;
+	
+	@Enumerated(EnumType.STRING)
+	private LeadSource leadSource;
+	
+	@Enumerated(EnumType.STRING)
+	private LeadStatus leadStatus;
 	
 	@CreationTimestamp
 	@Column(nullable = false)
@@ -130,6 +141,31 @@ public class Customer {
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+
+	public CustomerType getCustomerType() {
+		return customerType;
+	}
+
+	public void setCustomerType(CustomerType customerType) {
+		this.customerType = customerType;
+	}
+
+	public LeadSource getLeadSource() {
+		return leadSource;
+	}
+
+	public void setLeadSource(LeadSource leadSource) {
+		this.leadSource = leadSource;
+	}
+
+	public LeadStatus getLeadStatus() {
+		return leadStatus;
+	}
+
+	public void setLeadStatus(LeadStatus leadStatus) {
+		this.leadStatus = leadStatus;
+	}
+	
 	
 	
 }

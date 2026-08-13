@@ -1,6 +1,10 @@
 package com.crm.dto;
 
 import com.crm.enums.CustomerStatus;
+import com.crm.enums.CustomerType;
+import com.crm.enums.LeadSource;
+import com.crm.enums.LeadStatus;
+import com.crm.validation.CustomerTypeValidation;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,6 +12,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+
+@CustomerTypeValidation
 public class CreateCustomerRequest {
 
 	
@@ -38,8 +44,17 @@ public class CreateCustomerRequest {
 	private String company;
 	
 	private String address;
-	@NotNull(message="Status is required")
+	
+	@NotNull(message="Customer status is required")
 	private CustomerStatus status;
+	
+	@NotNull(message="Customer type is required")
+	private CustomerType customerType;
+	
+	private LeadSource leadSource;
+	
+	private LeadStatus leadStatus;
+	
 	public String getFirstname() {
 		return firstname;
 	}
@@ -82,6 +97,23 @@ public class CreateCustomerRequest {
 	public void setStatus(CustomerStatus status) {
 		this.status = status;
 	}
-	
+	public CustomerType getCustomerType() {
+		return customerType;
+	}
+	public void setCustomerType(CustomerType customerType) {
+		this.customerType = customerType;
+	}
+	public LeadSource getLeadSource() {
+		return leadSource;
+	}
+	public void setLeadSource(LeadSource leadSource) {
+		this.leadSource = leadSource;
+	}
+	public LeadStatus getLeadStatus() {
+		return leadStatus;
+	}
+	public void setLeadStatus(LeadStatus leadStatus) {
+		this.leadStatus = leadStatus;
+	}
 	
 }

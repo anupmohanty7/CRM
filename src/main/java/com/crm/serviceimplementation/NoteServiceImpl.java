@@ -25,7 +25,7 @@ public class NoteServiceImpl implements NoteService {
 
 	@Override
 	public Note saveNote(Note note) {
-		Customer customer = customerRepository.findById(note.getCustomer().getId())
+		Customer customer = customerRepository.findById(note.getCustomer().getId())//USING THIS WE ARE CHECKING IF THE CUSTOMER EXIST OR NOT 
 				.orElseThrow(() -> new CustomerNotFoundException("Customer Not Found"));
 		note.setCustomer(customer);
 		return noteRepository.save(note);
@@ -46,7 +46,7 @@ public class NoteServiceImpl implements NoteService {
 	@Override
 	public Note updateNote(Long id, Note note) {
 		
-		Customer customer = customerRepository.findById(note.getCustomer().getId())
+		Customer customer = customerRepository.findById(note.getCustomer().getId())//USING THIS WE ARE CHECKING IF THE CUSTOMER EXIST OR NOT 
 				.orElseThrow(() -> new CustomerNotFoundException("Customer Not Found"));
 		note.setCustomer(customer);
 		Note existingnote = getNoteById(id);

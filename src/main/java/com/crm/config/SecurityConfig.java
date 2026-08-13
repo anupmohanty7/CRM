@@ -2,6 +2,7 @@ package com.crm.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.crm.security.JwtAuthenticationFilter;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig{
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -25,7 +27,7 @@ public class SecurityConfig{
         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 );
 		http.authorizeHttpRequests(auth -> {
-			auth.requestMatchers("/api/auth/**","/api/customers/**","/api/followups/**","/api/notes/**").permitAll();
+			auth.requestMatchers("/api/auth/**").permitAll();
 			auth.requestMatchers(
 			        "/swagger-ui/**",	
 			        "/v3/api-docs/**"

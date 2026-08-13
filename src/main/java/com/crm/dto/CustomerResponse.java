@@ -3,6 +3,9 @@ package com.crm.dto;
 import java.time.LocalDateTime;
 
 import com.crm.enums.CustomerStatus;
+import com.crm.enums.CustomerType;
+import com.crm.enums.LeadSource;
+import com.crm.enums.LeadStatus;
 
 public class CustomerResponse {
 	
@@ -21,6 +24,12 @@ public class CustomerResponse {
 	private String address;
 	
 	private CustomerStatus status;
+	
+	private CustomerType customerType;
+	
+	private LeadSource leadSource;
+	
+	private LeadStatus leadStatus;
 
 	private LocalDateTime createdAt;
 	
@@ -90,6 +99,30 @@ public class CustomerResponse {
 		this.status = status;
 	}
 
+	public CustomerType getCustomerType() {
+		return customerType;
+	}
+
+	public void setCustomerType(CustomerType customerType) {
+		this.customerType = customerType;
+	}
+
+	public LeadSource getLeadSource() {
+		return leadSource;
+	}
+
+	public void setLeadSource(LeadSource leadSource) {
+		this.leadSource = leadSource;
+	}
+
+	public LeadStatus getLeadStatus() {
+		return leadStatus;
+	}
+
+	public void setLeadStatus(LeadStatus leadStatus) {
+		this.leadStatus = leadStatus;
+	}
+
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
@@ -105,7 +138,4 @@ public class CustomerResponse {
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	
-	
-
 }

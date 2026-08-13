@@ -1,4 +1,4 @@
-package com.crm.security;
+package com.crm.security;////This is where the USer is loaded from database after JWT authentication
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

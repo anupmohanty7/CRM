@@ -92,7 +92,10 @@ public class User implements UserDetails {
 	//implementing USerDetails methods
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-	    return List.of(new SimpleGrantedAuthority(role.getRoleName()));
+
+	    String authority = "ROLE_" + role.getRoleName();
+
+	    return List.of(new SimpleGrantedAuthority(authority));
 	}
 
 	@Override

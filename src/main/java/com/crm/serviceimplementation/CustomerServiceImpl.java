@@ -22,8 +22,8 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public CustomerResponse CreateCustomer(CreateCustomerRequest request) {
-		Customer customer=new Customer();
-		
+		Customer customer = new Customer();
+
 		customer.setFirstname(request.getFirstname());
 		customer.setLastname(request.getLastname());
 		customer.setEmail(request.getEmail());
@@ -31,11 +31,16 @@ public class CustomerServiceImpl implements CustomerService {
 		customer.setCompany(request.getCompany());
 		customer.setAddress(request.getAddress());
 		customer.setStatus(request.getStatus());
-		
+
+		// Lead-related fields
+		customer.setCustomerType(request.getCustomerType());
+		customer.setLeadSource(request.getLeadSource());
+		customer.setLeadStatus(request.getLeadStatus());
+
 		Customer savedCustomer = customerRepository.save(customer);
-		
+
 		CustomerResponse response = new CustomerResponse();
-		
+
 		response.setId(savedCustomer.getId());
 		response.setFirstname(savedCustomer.getFirstname());
 		response.setLastname(savedCustomer.getLastname());
@@ -44,9 +49,15 @@ public class CustomerServiceImpl implements CustomerService {
 		response.setCompany(savedCustomer.getCompany());
 		response.setAddress(savedCustomer.getAddress());
 		response.setStatus(savedCustomer.getStatus());
+
+		// Lead-related fields
+		response.setCustomerType(savedCustomer.getCustomerType());
+		response.setLeadSource(savedCustomer.getLeadSource());
+		response.setLeadStatus(savedCustomer.getLeadStatus());
+
 		response.setCreatedAt(savedCustomer.getCreatedAt());
 		response.setUpdatedAt(savedCustomer.getUpdatedAt());
-		
+
 		return response;
 	}
 
@@ -57,7 +68,8 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public Customer getCustomerById(Long id) {
-		return customerRepository.findById(id).orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
+		return customerRepository.findById(id)
+				.orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
 	}
 
 	@Override
@@ -72,13 +84,17 @@ public class CustomerServiceImpl implements CustomerService {
 		oldData.setAddress(customer.getAddress());
 		oldData.setStatus(customer.getStatus());
 
+		// Lead-related fields
+		oldData.setCustomerType(customer.getCustomerType());
+		oldData.setLeadSource(customer.getLeadSource());
+		oldData.setLeadStatus(customer.getLeadStatus());
+
 		return customerRepository.save(oldData);
 	}
 
 	@Override
 	public void deleteCustomer(Long id) {
-		Customer customer=getCustomerById(id);
+		Customer customer = getCustomerById(id);
 		customerRepository.delete(customer);
 	}
-
 }
