@@ -6,13 +6,16 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.crm.dto.ChangeRoleRequest;
 import com.crm.dto.CreateUserRequest;
 import com.crm.dto.LoginRequest;
+import com.crm.dto.UpdateUserRequest;
 import com.crm.dto.UserResponse;
 import com.crm.entity.Role;
 import com.crm.entity.User;
 import com.crm.enums.UserStatus;
 import com.crm.exception.InvalidPasswordException;
+import com.crm.exception.RoleNotFoundException;
 import com.crm.exception.UserNotFoundException;
 import com.crm.repository.RoleRepository;
 import com.crm.repository.UserRepository;
@@ -98,7 +101,7 @@ public class UserServiceImpl implements UserService {
 		
 		Role role = roleRepository.findByRoleName(request.getRole())
                 .orElseThrow(() ->
-                        new RuntimeException("Role not found"));
+                        new RoleNotFoundException("Role not found"));
 
         User user = new User();
 
@@ -127,5 +130,67 @@ public class UserServiceImpl implements UserService {
 
         return response;
 	}
+	@Override
+	public UserResponse updateUser(Long id, UpdateUserRequest request) {
+
+	    User user = userRepository.findById(id)
+	            .orElseThrow(() ->
+	                    new UserNotFoundException("User not found"));
+
+	    user.setFirstname(request.getFirstName());
+	    user.setLastname(request.getLastName());
+	    user.setEmail(request.getEmail());
+
+	    User updatedUser = userRepository.save(user);
+
+	    UserResponse response = new UserResponse();
+
+	    response.setId(updatedUser.getId());
+	    response.setFirstName(updatedUser.getFirstname());
+	    response.setLastName(updatedUser.getLastname());
+	    response.setEmail(updatedUser.getEmail());
+	    response.setRole(updatedUser.getRole().getRoleName());
+	    response.setStatus(updatedUser.getStatus());
+
+	    return response;
+	}
+	
+	@Override
+	public void deleteUser(Long id) {
+
+	    User user = userRepository.findById(id)
+	            .orElseThrow(() ->
+	                    new UserNotFoundException("User not found"));
+
+	    userRepository.delete(user);
+	}
+
+	@Override
+	public UserResponse changeUserRole(Long id, ChangeRoleRequest request) {
+
+	    User user = userRepository.findById(id)
+	            .orElseThrow(() ->
+	                    new UserNotFoundException("User not found"));
+
+	    Role role = roleRepository.findByRoleName(request.getRole())
+	            .orElseThrow(() ->
+	                    new RoleNotFoundException("Role not found"));
+
+	    user.setRole(role);
+
+	    User updatedUser = userRepository.save(user);
+
+	    UserResponse response = new UserResponse();
+
+	    response.setId(updatedUser.getId());
+	    response.setFirstName(updatedUser.getFirstname());
+	    response.setLastName(updatedUser.getLastname());
+	    response.setEmail(updatedUser.getEmail());
+	    response.setRole(updatedUser.getRole().getRoleName());
+	    response.setStatus(updatedUser.getStatus());
+
+	    return response;
+	}
+	
 
 }
