@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.crm.dto.ChangeRoleRequest;
+import com.crm.dto.ChangeStatusRequest;
 import com.crm.dto.CreateUserRequest;
 import com.crm.dto.LoginRequest;
 import com.crm.dto.UpdateUserRequest;
@@ -48,6 +49,10 @@ public class UserServiceImpl implements UserService {
 			throw new UserNotFoundException("User not found");
 		}
 
+		if (user.getStatus() != UserStatus.ACTIVE) {
+		    throw new RuntimeException("User account is not active");
+		}
+		
 		if (!passwordEncoder.matches(request.getPassword(),user.getPassword())) {
 			throw new InvalidPasswordException("Incorrect Password");
 		}
@@ -177,6 +182,28 @@ public class UserServiceImpl implements UserService {
 	                    new RoleNotFoundException("Role not found"));
 
 	    user.setRole(role);
+
+	    User updatedUser = userRepository.save(user);
+
+	    UserResponse response = new UserResponse();
+
+	    response.setId(updatedUser.getId());
+	    response.setFirstName(updatedUser.getFirstname());
+	    response.setLastName(updatedUser.getLastname());
+	    response.setEmail(updatedUser.getEmail());
+	    response.setRole(updatedUser.getRole().getRoleName());
+	    response.setStatus(updatedUser.getStatus());
+
+	    return response;
+	}
+	@Override
+	public UserResponse changeUserStatus(Long id, ChangeStatusRequest request) {
+
+	    User user = userRepository.findById(id)
+	            .orElseThrow(() ->
+	                    new UserNotFoundException("User not found"));
+
+	    user.setStatus(request.getStatus());
 
 	    User updatedUser = userRepository.save(user);
 

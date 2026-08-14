@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crm.dto.ChangeRoleRequest;
+import com.crm.dto.ChangeStatusRequest;
 import com.crm.dto.CreateUserRequest;
 import com.crm.dto.UpdateUserRequest;
 import com.crm.dto.UserResponse;
@@ -73,4 +74,12 @@ public class UserController {
 
 	    return userService.changeUserRole(id, request);
 	}  
+	@PreAuthorize("hasRole('ADMIN')")
+	@PutMapping("/{id}/status")
+	public UserResponse changeUserStatus(
+	        @PathVariable Long id,
+	        @Valid @RequestBody ChangeStatusRequest request) {
+
+	    return userService.changeUserStatus(id, request);
+	}
 }

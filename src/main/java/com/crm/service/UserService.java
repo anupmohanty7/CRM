@@ -3,6 +3,7 @@ package com.crm.service;
 import java.util.List;
 
 import com.crm.dto.ChangeRoleRequest;
+import com.crm.dto.ChangeStatusRequest;
 import com.crm.dto.CreateUserRequest;
 import com.crm.dto.LoginRequest;
 import com.crm.dto.UpdateUserRequest;
@@ -24,4 +25,6 @@ public interface UserService {
 	void deleteUser(Long id);
 	
 	UserResponse changeUserRole(Long id, ChangeRoleRequest request);
+	
+	UserResponse changeUserStatus(Long id, ChangeStatusRequest request);
 }

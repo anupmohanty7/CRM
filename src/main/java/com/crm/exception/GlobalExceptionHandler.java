@@ -48,4 +48,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ex.getMessage());
     }
+    
+    @ExceptionHandler(CustomFielsNotFoundException.class)
+    public ResponseEntity<String> handleCustomFielsNotFoundException(
+    		CustomFielsNotFoundException ex) {
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
+    }
 }
