@@ -15,6 +15,6 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-    	System.out.println(passwordEncoder.encode("inactive123"));
+    		//System.out.println(passwordEncoder.encode("inactive123"));
     }
 }

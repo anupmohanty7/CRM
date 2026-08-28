@@ -7,4 +7,6 @@ import com.crm.enums.FollowupStatus;
 
 public interface FollowUpRepository extends JpaRepository<FollowUp, Long> {
 	long countByStatus(FollowupStatus status);
+	
+	void deleteByCustomerId(Long customerId);
 }

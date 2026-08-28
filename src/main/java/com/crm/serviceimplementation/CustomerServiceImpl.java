@@ -3,21 +3,28 @@ package com.crm.serviceimplementation;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.crm.dto.CreateCustomerRequest;
 import com.crm.dto.CustomerResponse;
 import com.crm.entity.Customer;
 import com.crm.exception.CustomerNotFoundException;
 import com.crm.repository.CustomerRepository;
+import com.crm.repository.FollowUpRepository;
+import com.crm.repository.NoteRepository;
 import com.crm.service.CustomerService;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
 	private final CustomerRepository customerRepository;
+	private final NoteRepository noteRepository;
+	private final FollowUpRepository followUpRepository;
 
-	public CustomerServiceImpl(CustomerRepository customerRepository) {
+	public CustomerServiceImpl(CustomerRepository customerRepository,NoteRepository noteRepository,FollowUpRepository followupRepository, FollowUpRepository followUpRepository) {
 		this.customerRepository = customerRepository;
+		this.noteRepository=noteRepository;
+		this.followUpRepository=followUpRepository;
 	}
 
 	@Override
@@ -93,8 +100,17 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteCustomer(Long id) {
-		Customer customer = getCustomerById(id);
-		customerRepository.delete(customer);
+
+	    if (!customerRepository.existsById(id)) {
+	        throw new RuntimeException("Customer not found");
+	    }
+
+	    noteRepository.deleteByCustomerId(id);
+
+	    followUpRepository.deleteByCustomerId(id);
+
+	    customerRepository.deleteById(id);
 	}
 }
