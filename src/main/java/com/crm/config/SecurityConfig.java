@@ -90,22 +90,24 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(auth -> auth
 
-                .requestMatchers(
-                        HttpMethod.OPTIONS,
-                        "/**"
-                ).permitAll()
+            	    .requestMatchers(
+            	        HttpMethod.OPTIONS,
+            	        "/**"
+            	    ).permitAll()
 
-                .requestMatchers(
-                        "/api/auth/**"
-                ).permitAll()
+            	    .requestMatchers(
+            	        HttpMethod.POST,
+            	        "/api/auth/login",
+            	        "/api/auth/register"
+            	    ).permitAll()
 
-                .requestMatchers(
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**"
-                ).permitAll()
+            	    .requestMatchers(
+            	        "/swagger-ui/**",
+            	        "/v3/api-docs/**"
+            	    ).permitAll()
 
-                .anyRequest().authenticated()
-            )
+            	    .anyRequest().authenticated()
+            	)
 
             .addFilterBefore(
                     jwtAuthenticationFilter,
