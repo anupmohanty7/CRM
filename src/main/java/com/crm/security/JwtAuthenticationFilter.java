@@ -27,13 +27,33 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-
+		
+		   System.out.println(
+			        "JWT FILTER: " +
+			        request.getMethod() +
+			        " " +
+			        request.getRequestURI()
+			    );
+		
+		
+		
+//		String authHeader = request.getHeader("Authorization");
+//
+//		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+//			filterChain.doFilter(request, response);
+//			return;
+//		}
 		String authHeader = request.getHeader("Authorization");
 
-		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-			filterChain.doFilter(request, response);
-			return;
-		}
+	    System.out.println("AUTH HEADER: " + authHeader);
+
+	    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+
+	        System.out.println("NO VALID BEARER TOKEN - CONTINUING");
+
+	        filterChain.doFilter(request, response);
+	        return;
+	    }
 
 		String jwt = authHeader.substring(7);
 		String username = jwtUtil.extractUsername(jwt);
