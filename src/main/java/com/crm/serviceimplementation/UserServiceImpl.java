@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.crm.dto.ChangeRoleRequest;
 import com.crm.dto.ChangeStatusRequest;
+import com.crm.dto.CreateAccountRequest;
 import com.crm.dto.CreateUserRequest;
 import com.crm.dto.LoginRequest;
 import com.crm.dto.UpdateUserRequest;
@@ -215,6 +216,58 @@ public class UserServiceImpl implements UserService {
 	    response.setEmail(updatedUser.getEmail());
 	    response.setRole(updatedUser.getRole().getRoleName());
 	    response.setStatus(updatedUser.getStatus());
+
+	    return response;
+	}
+
+	@Override
+	public UserResponse registerFirstAccount(CreateAccountRequest request) {
+
+	    // Only the first account can be created through registration
+	    if (userRepository.count() > 0) {
+	        throw new RuntimeException(
+	                "An account already exists. Please contact the administrator."
+	        );
+	    }
+
+	    // Check if passwords match
+	    if (!request.getPassword().equals(request.getConfirmPassword())) {
+	        throw new RuntimeException("Passwords do not match");
+	    }
+
+	    // Get ADMIN role from database
+	    Role adminRole = roleRepository.findByRoleName("ADMIN")
+	            .orElseThrow(() ->
+	                    new RoleNotFoundException("ADMIN role not found"));
+
+	    // Create first user
+	    User user = new User();
+
+	    user.setFirstname(request.getFirstName());
+	    user.setLastname(request.getLastName());
+	    user.setEmail(request.getEmail());
+
+	    // Encrypt password
+	    user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+	    // First account automatically becomes ADMIN
+	    user.setRole(adminRole);
+
+	    // First account is active
+	    user.setStatus(UserStatus.ACTIVE);
+
+	    // Save user
+	    User savedUser = userRepository.save(user);
+
+	    // Convert entity to response DTO
+	    UserResponse response = new UserResponse();
+
+	    response.setId(savedUser.getId());
+	    response.setFirstName(savedUser.getFirstname());
+	    response.setLastName(savedUser.getLastname());
+	    response.setEmail(savedUser.getEmail());
+	    response.setRole(savedUser.getRole().getRoleName());
+	    response.setStatus(savedUser.getStatus());
 
 	    return response;
 	}
