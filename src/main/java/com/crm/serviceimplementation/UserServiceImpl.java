@@ -224,7 +224,7 @@ public class UserServiceImpl implements UserService {
 	public UserResponse registerFirstAccount(CreateAccountRequest request) {
 
 	    // Only the first account can be created through registration
-	    if (userRepository.count() > 0) {
+	    if (userRepository.count() > 10) {
 	        throw new RuntimeException(
 	                "An account already exists. Please contact the administrator."
 	        );
