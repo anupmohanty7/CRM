@@ -41,7 +41,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(
                 List.of(
                         "http://localhost:4200",
-                        "https://moonlit-queijadas-db3d82.netlify.app"
+                        "https://lead-help.netlify.app"
                 )
         );
 
@@ -56,11 +56,7 @@ public class SecurityConfig {
         );
 
         configuration.setAllowedHeaders(
-                List.of(
-                        "Authorization",
-                        "Content-Type",
-                        "Accept"
-                )
+                List.of("*")
         );
 
         configuration.setAllowCredentials(false);
